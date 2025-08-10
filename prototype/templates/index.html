@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adani Uni typesetting compiler</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #5b3cc4 25%, #6f53dc 75%);
+            color: white;
+        }
+        .container {
+            display: flex;
+            width: 90%;
+            height: 80%;
+            max-width: 1200px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+        #editor {
+            width: 50%;
+            padding: 20px;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+        }
+        textarea {
+            flex: 1;
+            width: 100%;
+            padding: 15px;
+            font-size: 16px;
+            font-family: 'Courier New', Courier, monospace;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            resize: none;
+        }
+        #compile-btn {
+            margin-top: 15px;
+            padding: 10px;
+            font-size: 16px;
+            background-color: #5b3cc4;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #compile-btn:hover {
+            background-color: #6f53dc;
+        }
+        #preview {
+            width: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #fff;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="editor">
+            <h2 style="color: #333;">Markdown Editor</h2>
+            <textarea id="editor-content" placeholder="Write your Typst code here..."></textarea>
+            <button id="compile-btn">Compile & Preview</button>
+        </div>
+        <div id="preview">
+            <iframe id="pdf-viewer"></iframe>
+        </div>
+    </div>
+
+    <script>
+        function debounce(func, delay) {
+            let timer;
+            return function (...args) {
+                clearTimeout(timer);
+                timer = setTimeout(() => func.apply(this, args), delay);
+            };
+        }
+
+        const editorContent = document.getElementById('editor-content');
+        const pdfViewer = document.getElementById('pdf-viewer');
+
+        const updatePreview = debounce(function () {
+            fetch('/compile', {
+                method: 'POST',
+                body: new URLSearchParams({ 'content': editorContent.value })
+            })
+                .then(response => {
+                    if (response.ok) return response.blob();
+                    throw new Error('Error compiling Typst code');
+                })
+                .then(blob => {
+                    const url = URL.createObjectURL(blob);
+                    pdfViewer.src = url;
+                })
+                .catch(error => alert(error.message));
+        }, 1000);
+
+        editorContent.addEventListener('input', updatePreview);
+    </script>
+</body>
+</html>

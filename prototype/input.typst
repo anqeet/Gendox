@@ -1,0 +1,76 @@
+#let hrule = align(center, box(height: 0.1%, line(length: 100%)))
+#let ispageone() = counter(page).get().at(0) == 1
+#set page(
+  margin:(
+    top: 127pt
+  ),
+  header:
+    context { if(counter(page).get().at(0)== 1) [
+        #set align(center)
+        Adani University \
+        Bachelor of Technology \
+        Subject Name: Advance Network Protocol \
+        Subject Code: #h(1fr) Sem: 6th #h(1fr) Date:#h(2cm) \
+        #hrule
+
+    ] else [
+        #set align(center)
+    ]},
+  footer:
+  align(left)[
+    Department of Information and Communication Technology
+    #h(1fr)
+    Page No. \
+    Adani University, Ahmedabad, Gujarat
+  ]
+)
+
+#align(center, text(17pt)[
+  *Experiment 9*
+])
+
+= Objective
+
+The objective of this experiment is to configure Web Server (HTTP/S).
+
+= Software Used
+
+Cisco Packet Tracer 8.2.2
+
+= Theory
+#pagebreak()
+
+#pagebreak()
+
+= Diagram
+
+#figure(
+  image("diag9.png",
+        width: 50%
+  ),
+  caption: [Diagram],
+)
+
+= Result
+== More Pics
+#figure(
+  image("pic1.png"),
+  caption: [First Image],
+)
+#figure(
+  image("pic2.png"),
+  caption: [Second Image],
+)
+#figure(
+  image("pic3.png"),
+  caption: [Third Image],
+)
+#figure(
+  image("pic4.png"),
+  caption: [Final Image],
+)
+
+= Conclusion
+In this experiment, we set up an FTP server and demonstrated how to transfer files between two PCs. Using FTP, one PC uploaded a file to the server, and another PC successfully downloaded it, illustrating the process of file transfer in a network.
+
+$ circle triangle arrow sum $
